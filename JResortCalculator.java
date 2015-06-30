@@ -1,188 +1,79 @@
-// MenuDemo.java: Use menus to move message in a panel
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class JResortCalculator extends JFrame implements ItemListener {
-  // Text fields for Number 1, Number 2, and Result
-   private JTextField jtfResult;
+public class JResortCalculator extends JFrame {
 
+   private JLabel jlPrice, jlBasePrice, jlOptions, jlTotal;
+    
    private JCheckBox jcbWeekend, jcbBreakfast, jcbGolf;
-  // Buttons "Add", "Subtract", "Multiply" and "Divide"
-  //private JButton jbtAdd, jbtSub, jbtMul, jbtDiv;
-
-  // Menu items "Add", "Subtract", "Multiply","Divide" and "Close"
-  //private JMenuItem jmiAdd, jmiSub, jmiMul, jmiDiv, jmiClose;
-
-  /** Main method */
-  public static void main(String[] args) {
-    JResortCalculator frame = new JResortCalculator();
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.pack();
-    frame.setVisible(true);
-  }// end main method
-
-  /** Default constructor */
-  public JResortCalculator() {
-    setTitle("Resort Price Estimator");
-
-    // Create menu bar
-    //JMenuBar jmb = new JMenuBar();
-
-    // Set menu bar to the frame
-    //setJMenuBar(jmb);
-
-    // Add menu "Operation" to menu bar
-    /*JMenu operationMenu = new JMenu("Operation");
-    operationMenu.setMnemonic('O');
-    jmb.add(operationMenu);
-
-    // Add menu "Exit" in menu bar
-    JMenu exitMenu = new JMenu("Exit");
-    exitMenu.setMnemonic('E');
-    jmb.add(exitMenu);
-
-    // Add menu items with mnemonics to menu "Operation"
-    operationMenu.add(jmiAdd= new JMenuItem("Add", 'A'));
-    operationMenu.add(jmiSub = new JMenuItem("Subtract", 'S'));
-    operationMenu.add(jmiMul = new JMenuItem("Multiply", 'M'));
-    operationMenu.add(jmiDiv = new JMenuItem("Divide", 'D'));
-    exitMenu.add(jmiClose = new JMenuItem("Close", 'C'));
-
-    // Set keyboard accelerators
-    jmiAdd.setAccelerator(
-      KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-
-    jmiSub.setAccelerator(
-      KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-
-    jmiMul.setAccelerator(
-      KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
-
-   jmiDiv.setAccelerator(
-      KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
-*/
-    // Panel p1 to hold text fields and labels
-    JPanel p1 = new JPanel();
-    p1.setLayout(new FlowLayout());
-    p1.add(new JLabel("Resort Price Calculator"));
-    
-    /*JPanel p2 = new JPanel();
-    p2.setLayout(new FlowLayout());    */
-    p1.add(new JLabel("Base price for a room is $200."));
-    
-    JPanel p3 = new JPanel();
-    p3.setLayout(new FlowLayout());    
-    p3.add(new JLabel("Check the options you want."));
    
-    JPanel p4 = new JPanel();
-    p4.setLayout(new FlowLayout());
-    p4.add(jcbWeekend = new JCheckbox("Weekend Premium", false));
-    p4.add(jcbBreakfast = new JCheckbox("Breakfast", false));
-    
-    JPanel p5 = new JPanel();
-    p5.setLayout(new FlowLayout());
-    p5.add(jcbGolf = new JCheckbox("Golf", false));
-    
-    p5.add(new JLabel("The price for your stay is "));
-    p5.add(jtfResult = new JTextField(4));
-    jtfResult.setEditable(false);// cannot type in this text field
-    
-   /* p1.add(jtfNum1 = new JTextField(3));
-    p1.add(new JLabel("Number 2"));
-    p1.add(jtfNum2 = new JTextField(3));
-    
-
-    // Panel p2 to hold buttons
-    JPanel p2 = new JPanel();
-    p2.setLayout(new FlowLayout());
-    p2.add(jbtAdd = new JButton("Add"));
-    p2.add(jbtSub = new JButton("Subtract"));
-    p2.add(jbtMul = new JButton("Multiply"));
-    p2.add(jbtDiv = new JButton("Divide"));*/
-    
-    JPanel p1 = new JPanel();
+   private JTextField jtfTotal;
    
+   private JPanel jpTop, jpBottom, jpTotalPanel;
+   
+   public JResortCalculator(){
+      
+      jlPrice = new JLabel("Resort Price Calculator");
+      jlPrice.setHorizontalAlignment(SwingConstants.CENTER);
+      
+      jlBasePrice = new JLabel("Base price for a room is $200.");
+      jlBasePrice.setHorizontalAlignment(SwingConstants.CENTER);
 
-    // Add panels to the frame
-    getContentPane().setLayout(new BorderLayout());
-    getContentPane().add(p1, BorderLayout.NORTH);
-    getContentPane().add(p2, BorderLayout.CENTER);
-    getContentPane().add(p3, BorderLayout.LINE_END);
-    getContentPane().add(p4, BorderLayout.LINE_END);
-    getContentPane().add(p5, BorderLayout.LINE_END);
-    
-    // Register listeners
-    jbtAdd.addActionListener(this);
-    jbtSub.addActionListener(this);
-    jbtMul.addActionListener(this);
-    jbtDiv.addActionListener(this);
-    
-    jmiAdd.addActionListener(this);
-    jmiSub.addActionListener(this);
-    jmiMul.addActionListener(this);
-    jmiDiv.addActionListener(this);
-    jmiClose.addActionListener(this);
-  }//end Default Constructor
+      jlOptions = new JLabel("Check the options you want.");
+      jlOptions.setHorizontalAlignment(SwingConstants.CENTER);
 
-
-//--------------------------------------------------------------------
-  /** Handle ActionEvent from buttons and menu items */
-  public void actionPerformed(ActionEvent e) {
-    String actionCommand = e.getActionCommand();
-
-    // Handle button events
-    if (e.getSource() instanceof JButton) {
-      if ("Add".equals(actionCommand))
-        calculate('+');
-      else if ("Subtract".equals(actionCommand))
-        calculate('-');
-      else if ("Multiply".equals(actionCommand))
-        calculate('*');
-      else if ("Divide".equals(actionCommand))
-        calculate('/');
-    }// end if instanceof JButton
-
-    else if (e.getSource() instanceof JMenuItem) {
-      // Handle menu item events
-      if ("Add".equals(actionCommand))
-        calculate('+');
-      else if ("Subtract".equals(actionCommand))
-        calculate('-');
-      else if ("Multiply".equals(actionCommand))
-        calculate('*');
-      else if ("Divide".equals(actionCommand))
-        calculate('/');
-      else if ("Close".equals(actionCommand))
-        System.exit(0);
-    }//end if instanceof JMenuItem
-
-  } // end actionPerformed method
-
-
-//-------------------------------------------------------------
-  /** Calculate and show the result in jtfResult */
-  private void calculate(char operator) {
-    // Obtain Number 1 and Number 2
-    int num1 = (Integer.parseInt(jtfNum1.getText().trim()));
-    int num2 = (Integer.parseInt(jtfNum2.getText().trim()));
-    int result = 0;
-
-    // Perform selected operation
-    switch (operator) {
-      case '+': result = num1 + num2;
-                break;
-      case '-': result = num1 - num2;
-                break;
-      case '*': result = num1 * num2;
-                break;
-      case '/': result = num1 / num2;
-    }//end switch statement
-
-    // Set result in jtfResult
-    jtfResult.setText(String.valueOf(result));
-
-  }//end calculate method
-
-
-}// end class MemoDemo
+      
+      jlTotal = new JLabel("The price for your stay is ");
+      
+      jcbWeekend = new JCheckBox("Weekend premium $100");
+      jcbBreakfast = new JCheckBox("Breakfast $20");
+      jcbGolf = new JCheckBox("Golf $75");
+      
+      jtfTotal = new JTextField(5);
+      
+      jpTop = new JPanel();
+      jpTop.setLayout(new BorderLayout());
+      
+      jpBottom = new JPanel();
+      jpBottom.setLayout(new GridLayout(2,2));
+      
+      jpTotalPanel = new JPanel();
+      jpTotalPanel.setLayout(new FlowLayout());
+      
+      
+      // adds Labels to panel      
+      jpTop.add(jlPrice, BorderLayout.NORTH);
+      jpTop.add(jlBasePrice, BorderLayout.CENTER);
+      jpTop.add(jlOptions, BorderLayout.SOUTH);
+      
+      jpTotalPanel.add(jlTotal);
+      jpTotalPanel.add(jtfTotal);
+      
+      jpBottom.add(jcbWeekend);
+      jpBottom.add(jcbBreakfast);
+      jpBottom.add(jcbGolf);
+      jpBottom.add(jpTotalPanel);    
+      
+      // adds panel to the frame
+      add(jpTop, BorderLayout.NORTH);   
+      add(jpBottom, BorderLayout.SOUTH);
+      
+      
+      
+      // Frame parameters
+      setTitle("Resort Price Estimator");
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      //setSize(500,400);
+      setLocation(500,300);
+      setVisible(true);
+      setResizable(false);
+      pack();
+      
+   }
+   
+   public static void main(String [] args){
+      new JResortCalculator();
+   }
+   
+}// closes class
